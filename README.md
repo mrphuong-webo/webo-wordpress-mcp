@@ -5,6 +5,7 @@ Standalone MCP gateway and WordPress tools platform.
 ## Dependencies
 
 - This plugin bundles `wordpress/abilities-api` via Composer for standalone abilities bridge.
+- This plugin bundles `wordpress/mcp-adapter` and enables adapter runtime by default.
 - Run `composer install` in plugin root before activation on environments that do not include `vendor/` in deployment.
 
 ## Build release package

@@ -6,4 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'WP\\MCP\\' => array($vendorDir . '/wordpress/mcp-adapter/includes'),
 );

@@ -17,6 +17,7 @@ WEBO WordPress MCP runs as the primary standalone MCP gateway for WordPress.
 - Endpoint: POST /wp-json/mcp/v1/router
 - Methods: initialize, tools/list, tools/call
 - Bundled Abilities API support via Composer vendor
+- Bundled WordPress MCP Adapter runtime
 - Automatic bridge from registered abilities to MCP tools
 - Public tools policy with category and allowlist filters
 - Optional API key and HMAC authentication for tools/call

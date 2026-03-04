@@ -33,6 +33,7 @@ require_once __DIR__ . '/inc/router/class-mcp-router.php';
 use WeboMCP\Core\Registry\ToolRegistry;
 use WeboMCP\Core\Router\McpRouter;
 use WeboMCP\Core\Tools\WordPressTools;
+use WP\MCP\Core\McpAdapter;
 
 /**
  * Converts Abilities API input schema to ToolRegistry arguments schema.
@@ -334,6 +335,23 @@ function webo_wordpress_mcp_bootstrap() {
 	}
 }
 add_action( 'init', 'webo_wordpress_mcp_bootstrap', 20 );
+
+/**
+ * Bootstraps WordPress MCP Adapter runtime.
+ *
+ * @return void
+ */
+function webo_wordpress_mcp_bootstrap_adapter() {
+	$enable_adapter = (bool) apply_filters( 'webo_wordpress_mcp_enable_adapter', true );
+	if ( ! $enable_adapter ) {
+		return;
+	}
+
+	if ( class_exists( McpAdapter::class ) ) {
+		McpAdapter::instance();
+	}
+}
+add_action( 'plugins_loaded', 'webo_wordpress_mcp_bootstrap_adapter', 20 );
 
 /**
  * Returns MCP-compatible tools/list response payload.
