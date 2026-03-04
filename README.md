@@ -2,6 +2,21 @@
 
 Core Tool Registry for WEBO MCP ecosystem.
 
+## Quick MCP + n8n setup
+
+- MCP endpoint: `POST /wp-json/mcp/v1/router`
+- MCP flow: `initialize` -> `tools/list` -> `tools/call`
+- n8n remote MCP package: `@automattic/mcp-wordpress-remote`
+- n8n env `WP_API_URL`: `https://your-site.com/wp-json/mcp/v1/router`
+
+## AI training references
+
+- MCP method schema and examples: use this file + `examples/addon-rankmath-example.php`
+- Internal/public policy filters for training data:
+  - `webo_wordpress_mcp_allow_internal_tools`
+  - `webo_wordpress_mcp_public_categories`
+  - `webo_wordpress_mcp_public_tool_allowlist`
+
 ## Architecture
 
 AI Agent -> MCP Request -> Tool Router -> Tool Registry -> Tool Execution
@@ -167,6 +182,12 @@ See full example: `examples/addon-rankmath-example.php`
 ## Optional diagnostics endpoint
 
 - `GET /wp-json/webo-wordpress-mcp/v1/tools`
+
+## WordPress.org packaging
+
+- Plugin header is in `webo-wordpress-mcp.php`
+- WordPress.org readme file is `readme.txt`
+- Keep stable version in sync between plugin header and `readme.txt`
 
 ## Error handling
 

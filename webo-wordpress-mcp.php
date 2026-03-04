@@ -4,6 +4,8 @@
  * Description: Core tool registry platform for WEBO MCP ecosystem.
  * Version: 1.0.0
  * Author: WEBO
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Text Domain: webo-wordpress-mcp
