@@ -64,7 +64,7 @@ class McpRouter {
 				return $this->handle_initialize( $params, $id );
 
 			case 'tools/list':
-				return $this->handle_tools_list( $request, $id );
+				return $this->handle_tools_list( $request, $params, $id );
 
 			case 'tools/call':
 				return $this->handle_tools_call( $request, $params, $id );
@@ -104,12 +104,21 @@ class McpRouter {
 	/**
 	 * Handles tools/list method.
 	 *
+	 * @param array<string, mixed> $params Request params.
 	 * @param int|string|null $id Request ID.
 	 * @return array<string, mixed>
 	 */
-	public function handle_tools_list( WP_REST_Request $request, $id ) {
+	public function handle_tools_list( WP_REST_Request $request, array $params, $id ) {
 		$include_internal = $this->is_internal_tools_allowed( $request );
+
+		$requested_include_internal = isset( $params['include_internal'] ) && filter_var( $params['include_internal'], FILTER_VALIDATE_BOOLEAN );
+		if ( $requested_include_internal && current_user_can( 'manage_options' ) ) {
+			$include_internal = true;
+		}
+
+		$all_payload = ToolRegistry::list_tools( true );
 		$payload          = ToolRegistry::list_tools( $include_internal );
+		$all_tools        = isset( $all_payload['tools'] ) && is_array( $all_payload['tools'] ) ? $all_payload['tools'] : array();
 		$tools            = isset( $payload['tools'] ) && is_array( $payload['tools'] ) ? $payload['tools'] : array();
 
 		$tools = array_values(
@@ -121,7 +130,17 @@ class McpRouter {
 			)
 		);
 
-		return $this->jsonrpc_success( array( 'tools' => $tools ), $id );
+		return $this->jsonrpc_success(
+			array(
+				'tools' => $tools,
+				'meta'  => array(
+					'registered_total' => count( $all_tools ),
+					'returned_total'   => count( $tools ),
+					'include_internal' => $include_internal,
+				),
+			),
+			$id
+		);
 	}
 
 	/**

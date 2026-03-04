@@ -375,8 +375,28 @@ function webo_wordpress_mcp_register_rest_routes() {
 		'/tools',
 		array(
 			'methods'             => 'GET',
-			'callback'            => static function () {
-				return rest_ensure_response( webo_wordpress_mcp_list_tools() );
+			'callback'            => static function ( \WP_REST_Request $request ) {
+				$include_internal = false;
+
+				if ( current_user_can( 'manage_options' ) ) {
+					$include_internal = filter_var( $request->get_param( 'include_internal' ), FILTER_VALIDATE_BOOLEAN );
+				}
+
+				$all_payload = ToolRegistry::list_tools( true );
+				$payload     = ToolRegistry::list_tools( $include_internal );
+				$all_tools   = isset( $all_payload['tools'] ) && is_array( $all_payload['tools'] ) ? $all_payload['tools'] : array();
+				$tools       = isset( $payload['tools'] ) && is_array( $payload['tools'] ) ? $payload['tools'] : array();
+
+				return rest_ensure_response(
+					array(
+						'tools' => $tools,
+						'meta'  => array(
+							'registered_total' => count( $all_tools ),
+							'returned_total'   => count( $tools ),
+							'include_internal' => $include_internal,
+						),
+					)
+				);
 			},
 			'permission_callback' => static function () {
 				return current_user_can( 'read' );

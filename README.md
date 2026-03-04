@@ -114,6 +114,26 @@ add_filter( 'webo_wordpress_mcp_public_categories', function () {
 5. Router executes tool via `ToolRegistry::call()`
 5. Router returns JSON-RPC result
 
+### tools/list troubleshooting (domain-specific)
+
+- JSON-RPC `tools/list` now returns `meta` with:
+  - `registered_total`
+  - `returned_total`
+  - `include_internal`
+- Admin can request internal tools with params:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "tools/list",
+  "params": { "include_internal": true },
+  "id": 1
+}
+```
+
+- Diagnostics REST endpoint also supports admin query:
+  - `GET /wp-json/webo-wordpress-mcp/v1/tools?include_internal=1`
+
 ### Error format
 
 ```json
