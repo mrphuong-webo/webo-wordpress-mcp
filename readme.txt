@@ -4,7 +4,7 @@ Tags: mcp, ai, json-rpc, api, wordpress
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,12 +31,13 @@ Standalone core tools included:
 - Media: list
 - Comments: list
 - Terms: list
+- Plugins: list active status
 - Options: get/update (safe allowlist only)
 
 Excluded by default in standalone-safe mode:
 
 - Bulk/mass execution tools
-- Plugin/theme management abilities
+- Plugin/theme write-management abilities
 - Multisite-specific abilities
 
 == Screenshots ==
@@ -76,6 +77,10 @@ Yes, when used with proper authentication, TLS, and a limited tool exposure poli
 
 == Changelog ==
 
+= 1.0.2 =
+* Added new read-only tool: webo/list-active-plugins.
+* Enables MCP clients to verify active plugins with capability check.
+
 = 1.0.1 =
 * Metadata refresh release to ensure dependency headers are reloaded correctly.
 * tools/list compatibility improvements for include_internal aliases and legacy endpoint support.
@@ -87,6 +92,9 @@ Yes, when used with proper authentication, TLS, and a limited tool exposure poli
 * Session management and optional API key/HMAC security.
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+Recommended update to support active plugins verification via MCP tool.
 
 = 1.0.1 =
 Recommended update to refresh plugin metadata and improve tools/list compatibility.

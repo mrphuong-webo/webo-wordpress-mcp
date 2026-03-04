@@ -178,12 +178,13 @@ Built-in standalone tools cover core WordPress operations:
 - Media (list)
 - Comments (list)
 - Terms (list)
+- Plugins (list active status)
 - Options (safe allowlist read/update)
 
 Excluded by default for WordPress.org-safe behavior:
 
 - Bulk/mass execution features
-- Plugin/theme management
+- Plugin/theme write-management
 - Multisite-specific abilities
 
 ## Tool definition

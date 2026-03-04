@@ -340,6 +340,82 @@ class WordPressTools {
 	}
 
 	/**
+	 * List installed plugins and active state.
+	 *
+	 * @param array<string, mixed> $arguments Tool arguments.
+	 * @return array<string, mixed>
+	 */
+	public static function list_active_plugins( array $arguments ) {
+		$include_inactive = isset( $arguments['include_inactive'] ) ? (bool) $arguments['include_inactive'] : false;
+
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		$installed_plugins = function_exists( 'get_plugins' ) ? get_plugins() : array();
+		$active_plugins    = get_option( 'active_plugins', array() );
+
+		if ( ! is_array( $active_plugins ) ) {
+			$active_plugins = array();
+		}
+
+		$network_active_plugins = array();
+		if ( is_multisite() ) {
+			$sitewide_plugins = get_site_option( 'active_sitewide_plugins', array() );
+			if ( is_array( $sitewide_plugins ) ) {
+				$network_active_plugins = array_keys( $sitewide_plugins );
+			}
+		}
+
+		$active_lookup = array_fill_keys( array_merge( $active_plugins, $network_active_plugins ), true );
+		$items         = array();
+
+		foreach ( $installed_plugins as $plugin_file => $metadata ) {
+			$is_active = isset( $active_lookup[ $plugin_file ] );
+			if ( ! $include_inactive && ! $is_active ) {
+				continue;
+			}
+
+			$items[] = array(
+				'plugin_file'    => (string) $plugin_file,
+				'name'           => isset( $metadata['Name'] ) ? (string) $metadata['Name'] : (string) $plugin_file,
+				'version'        => isset( $metadata['Version'] ) ? (string) $metadata['Version'] : '',
+				'author'         => isset( $metadata['Author'] ) ? wp_strip_all_tags( (string) $metadata['Author'] ) : '',
+				'active'         => $is_active,
+				'network_active' => in_array( $plugin_file, $network_active_plugins, true ),
+			);
+		}
+
+		usort(
+			$items,
+			static function ( $left, $right ) {
+				$left_active  = ! empty( $left['active'] ) ? 1 : 0;
+				$right_active = ! empty( $right['active'] ) ? 1 : 0;
+
+				if ( $left_active !== $right_active ) {
+					return $right_active - $left_active;
+				}
+
+				return strcmp( (string) $left['name'], (string) $right['name'] );
+			}
+		);
+
+		$active_total = 0;
+		foreach ( $items as $item ) {
+			if ( ! empty( $item['active'] ) ) {
+				++$active_total;
+			}
+		}
+
+		return array(
+			'items'        => $items,
+			'total'        => count( $items ),
+			'active_total' => $active_total,
+			'tool'         => 'webo/list-active-plugins',
+		);
+	}
+
+	/**
 	 * Read selected safe options.
 	 *
 	 * @param array<string, mixed> $arguments Tool arguments.
