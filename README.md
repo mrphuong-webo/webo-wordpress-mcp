@@ -129,6 +129,24 @@ add_filter( 'webo_wordpress_mcp_public_categories', function () {
 - Argument schema validation
 - Optional capability-based access control (`permission`)
 
+## Standalone mode (no WEBO MCP required)
+
+Built-in standalone tools cover core WordPress operations:
+
+- Site info
+- Posts (list/get/create/update/delete single)
+- Users (list)
+- Media (list)
+- Comments (list)
+- Terms (list)
+- Options (safe allowlist read/update)
+
+Excluded by default for WordPress.org-safe behavior:
+
+- Bulk/mass execution features
+- Plugin/theme management
+- Multisite-specific abilities
+
 ## Tool definition
 
 ```php

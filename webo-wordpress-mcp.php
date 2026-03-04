@@ -99,6 +99,10 @@ function webo_wordpress_mcp_register_wordpress_abilities() {
 			continue;
 		}
 
+		if ( ! webo_wordpress_mcp_should_bridge_ability( $ability_name ) ) {
+			continue;
+		}
+
 		$input_schema = method_exists( $ability, 'get_input_schema' ) ? $ability->get_input_schema() : array();
 		$category     = method_exists( $ability, 'get_category' ) ? (string) $ability->get_category() : 'wordpress';
 		$description  = (string) $ability->get_description();
@@ -131,30 +135,186 @@ function webo_wordpress_mcp_register_wordpress_abilities() {
 	}
 }
 
-function webo_wordpress_mcp_bootstrap() {
-	ToolRegistry::register(
+/**
+ * Whether ability should be bridged into MCP tools by default.
+ *
+ * @param string $ability_name Ability name.
+ * @return bool
+ */
+function webo_wordpress_mcp_should_bridge_ability( string $ability_name ) {
+	$ability_name = trim( $ability_name );
+	if ( '' === $ability_name ) {
+		return false;
+	}
+
+	$deny_patterns = apply_filters(
+		'webo_wordpress_mcp_bridge_deny_patterns',
+		array(
+			'bulk',
+			'plugins/',
+			'themes/',
+			'multisite/',
+		)
+	);
+
+	if ( is_array( $deny_patterns ) ) {
+		foreach ( $deny_patterns as $pattern ) {
+			$pattern = trim( (string) $pattern );
+			if ( '' !== $pattern && false !== strpos( $ability_name, $pattern ) ) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Registers standalone WordPress.org-safe tools.
+ *
+ * @return void
+ */
+function webo_wordpress_mcp_register_standalone_core_tools() {
+	$tools = array(
+		array(
+			'name'        => 'webo/get-site-info',
+			'description' => 'Get basic WordPress site diagnostics information',
+			'category'    => 'wordpress',
+			'permission'  => 'read',
+			'callback'    => array( WordPressTools::class, 'get_site_info' ),
+		),
 		array(
 			'name'        => 'webo/list-posts',
 			'description' => 'List WordPress posts',
 			'category'    => 'wordpress',
 			'arguments'   => array(
-				'per_page' => array(
-					'type'     => 'integer',
-					'required' => false,
-					'default'  => 10,
-					'min'      => 1,
-					'max'      => 100,
-				),
-				'post_type' => array(
-					'type'     => 'string',
-					'required' => false,
-					'default'  => 'post',
-				),
+				'per_page'  => array( 'type' => 'integer', 'required' => false, 'default' => 10, 'min' => 1, 'max' => 100 ),
+				'post_type' => array( 'type' => 'string', 'required' => false, 'default' => 'post' ),
+				'search'    => array( 'type' => 'string', 'required' => false, 'default' => '' ),
+				'status'    => array( 'type' => 'string', 'required' => false, 'default' => 'publish' ),
 			),
 			'permission'  => 'read',
 			'callback'    => array( WordPressTools::class, 'list_posts' ),
-		)
+		),
+		array(
+			'name'        => 'webo/get-post',
+			'description' => 'Get one post by ID',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'post_id' => array( 'type' => 'integer', 'required' => true, 'min' => 1 ),
+			),
+			'permission'  => 'read',
+			'callback'    => array( WordPressTools::class, 'get_post' ),
+		),
+		array(
+			'name'        => 'webo/create-post',
+			'description' => 'Create one post/page/custom post',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'title'     => array( 'type' => 'string', 'required' => true ),
+				'content'   => array( 'type' => 'string', 'required' => false, 'default' => '' ),
+				'post_type' => array( 'type' => 'string', 'required' => false, 'default' => 'post' ),
+				'status'    => array( 'type' => 'string', 'required' => false, 'default' => 'draft' ),
+			),
+			'permission'  => 'edit_posts',
+			'callback'    => array( WordPressTools::class, 'create_post' ),
+		),
+		array(
+			'name'        => 'webo/update-post',
+			'description' => 'Update one post/page/custom post',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'post_id' => array( 'type' => 'integer', 'required' => true, 'min' => 1 ),
+				'title'   => array( 'type' => 'string', 'required' => false ),
+				'content' => array( 'type' => 'string', 'required' => false ),
+				'status'  => array( 'type' => 'string', 'required' => false ),
+			),
+			'permission'  => 'edit_posts',
+			'callback'    => array( WordPressTools::class, 'update_post' ),
+		),
+		array(
+			'name'        => 'webo/delete-post',
+			'description' => 'Delete one post only (no bulk)',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'post_id' => array( 'type' => 'integer', 'required' => true, 'min' => 1 ),
+				'force'   => array( 'type' => 'boolean', 'required' => false, 'default' => false ),
+			),
+			'permission'  => 'delete_posts',
+			'callback'    => array( WordPressTools::class, 'delete_post' ),
+		),
+		array(
+			'name'        => 'webo/list-users',
+			'description' => 'List users (limited)',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'per_page' => array( 'type' => 'integer', 'required' => false, 'default' => 20, 'min' => 1, 'max' => 100 ),
+				'search'   => array( 'type' => 'string', 'required' => false, 'default' => '' ),
+			),
+			'permission'  => 'list_users',
+			'callback'    => array( WordPressTools::class, 'list_users' ),
+		),
+		array(
+			'name'        => 'webo/list-media',
+			'description' => 'List media library items',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'per_page' => array( 'type' => 'integer', 'required' => false, 'default' => 20, 'min' => 1, 'max' => 100 ),
+			),
+			'permission'  => 'upload_files',
+			'callback'    => array( WordPressTools::class, 'list_media' ),
+		),
+		array(
+			'name'        => 'webo/list-comments',
+			'description' => 'List comments',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'per_page' => array( 'type' => 'integer', 'required' => false, 'default' => 20, 'min' => 1, 'max' => 100 ),
+				'status'   => array( 'type' => 'string', 'required' => false, 'default' => 'approve' ),
+			),
+			'permission'  => 'moderate_comments',
+			'callback'    => array( WordPressTools::class, 'list_comments' ),
+		),
+		array(
+			'name'        => 'webo/list-terms',
+			'description' => 'List terms by taxonomy',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'taxonomy' => array( 'type' => 'string', 'required' => false, 'default' => 'category' ),
+				'per_page' => array( 'type' => 'integer', 'required' => false, 'default' => 50, 'min' => 1, 'max' => 100 ),
+			),
+			'permission'  => 'manage_categories',
+			'callback'    => array( WordPressTools::class, 'list_terms' ),
+		),
+		array(
+			'name'        => 'webo/get-options',
+			'description' => 'Read selected safe options',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'names' => array( 'type' => 'array', 'required' => true ),
+			),
+			'permission'  => 'manage_options',
+			'callback'    => array( WordPressTools::class, 'get_options' ),
+		),
+		array(
+			'name'        => 'webo/update-options',
+			'description' => 'Update selected safe options',
+			'category'    => 'wordpress',
+			'arguments'   => array(
+				'options' => array( 'type' => 'array', 'required' => true ),
+			),
+			'permission'  => 'manage_options',
+			'callback'    => array( WordPressTools::class, 'update_options' ),
+		),
 	);
+
+	foreach ( $tools as $tool ) {
+		ToolRegistry::register( $tool );
+	}
+}
+
+function webo_wordpress_mcp_bootstrap() {
+	webo_wordpress_mcp_register_standalone_core_tools();
 
 	do_action( 'webo_wordpress_mcp_register_tools' );
 

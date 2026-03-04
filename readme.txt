@@ -21,6 +21,22 @@ WEBO WordPress MCP provides a public MCP gateway for WordPress via JSON-RPC:
 - Optional API key and HMAC authentication for tools/call
 - Session lifecycle for MCP clients
 
+Standalone core tools included (no WEBO MCP required):
+
+- Site info
+- Posts: list/get/create/update/delete (single item only)
+- Users: list
+- Media: list
+- Comments: list
+- Terms: list
+- Options: get/update (safe allowlist only)
+
+Excluded by default in standalone-safe mode:
+
+- Bulk/mass execution tools
+- Plugin/theme management abilities
+- Multisite-specific abilities
+
 This plugin is designed as the public gateway layer. Advanced/internal abilities can be bridged by companion plugins (for example WEBO MCP) using the provided registry hooks.
 
 == Screenshots ==
@@ -48,6 +64,9 @@ Yes, via filter webo_wordpress_mcp_public_categories.
 
 = Can this run WordPress abilities without WEBO MCP? =
 Yes. If Abilities API is available, this plugin auto-bridges registered abilities to MCP tools. You can disable this with filter webo_wordpress_mcp_auto_bridge_abilities set to false.
+
+= Can I keep only WordPress.org-safe features? =
+Yes. Default bridge rules exclude patterns for bulk, plugins/themes, and multisite abilities.
 
 = Is this plugin suitable for production? =
 Yes, when used with proper authentication, TLS, and a limited tool exposure policy.
