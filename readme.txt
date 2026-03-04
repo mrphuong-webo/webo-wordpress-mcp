@@ -4,7 +4,7 @@ Tags: mcp, ai, json-rpc, api, wordpress
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,10 @@ Yes, when used with proper authentication, TLS, and a limited tool exposure poli
 
 == Changelog ==
 
+= 1.0.1 =
+* Metadata refresh release to ensure dependency headers are reloaded correctly.
+* tools/list compatibility improvements for include_internal aliases and legacy endpoint support.
+
 = 1.0.0 =
 * Initial stable public release.
 * MCP JSON-RPC router with initialize, tools/list, tools/call.
@@ -83,6 +87,9 @@ Yes, when used with proper authentication, TLS, and a limited tool exposure poli
 * Session management and optional API key/HMAC security.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Recommended update to refresh plugin metadata and improve tools/list compatibility.
 
 = 1.0.0 =
 Initial public release of WEBO WordPress MCP.
