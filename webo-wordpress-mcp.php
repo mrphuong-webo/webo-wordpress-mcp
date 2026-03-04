@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WEBO WordPress MCP
- * Description: Core tool registry platform for WEBO MCP ecosystem.
+ * Description: Standalone MCP gateway and WordPress tools platform.
  * Version: 1.0.0
  * Author: WEBO
  * License: GPLv2 or later

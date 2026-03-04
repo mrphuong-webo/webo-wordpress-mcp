@@ -8,20 +8,21 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Public MCP JSON-RPC gateway for WordPress with tool registry, tools/list discovery, tools/call execution, and session security.
+Standalone MCP JSON-RPC gateway for WordPress with built-in core tools and Abilities API bridge.
 
 == Description ==
 
-WEBO WordPress MCP provides a public MCP gateway for WordPress via JSON-RPC:
+WEBO WordPress MCP runs as the primary standalone MCP gateway for WordPress.
 
 - Endpoint: POST /wp-json/mcp/v1/router
 - Methods: initialize, tools/list, tools/call
-- Automatically bridges registered WordPress Abilities API abilities into MCP tools
+- Bundled Abilities API support via Composer vendor
+- Automatic bridge from registered abilities to MCP tools
 - Public tools policy with category and allowlist filters
 - Optional API key and HMAC authentication for tools/call
 - Session lifecycle for MCP clients
 
-Standalone core tools included (no WEBO MCP required):
+Standalone core tools included:
 
 - Site info
 - Posts: list/get/create/update/delete (single item only)
@@ -37,8 +38,6 @@ Excluded by default in standalone-safe mode:
 - Plugin/theme management abilities
 - Multisite-specific abilities
 
-This plugin is designed as the public gateway layer. Advanced/internal abilities can be bridged by companion plugins (for example WEBO MCP) using the provided registry hooks.
-
 == Screenshots ==
 
 1. MCP endpoint working in a REST client (initialize)
@@ -48,25 +47,25 @@ This plugin is designed as the public gateway layer. Advanced/internal abilities
 == Installation ==
 
 1. Upload the plugin folder to /wp-content/plugins/webo-wordpress-mcp
-2. Run `composer install` inside the plugin folder (required for bundled Abilities API)
+2. Run composer install inside the plugin folder
 3. Activate the plugin in WordPress Admin
 4. Send JSON-RPC requests to POST /wp-json/mcp/v1/router
 
-For release packaging, use `scripts/build-release.ps1` to create a clean zip with `.distignore` exclusions.
+For release packaging, use scripts/build-release.ps1 to create a clean zip with .distignore exclusions.
 
 == Frequently Asked Questions ==
 
 = Which endpoint should MCP clients use? =
 Use POST /wp-json/mcp/v1/router.
 
+= Can this run WordPress abilities by itself? =
+Yes. This plugin bundles Abilities API via Composer and auto-bridges registered abilities to MCP tools. You can disable auto-bridge with filter webo_wordpress_mcp_auto_bridge_abilities set to false.
+
 = Can I expose internal tools? =
 Yes, via filter webo_wordpress_mcp_allow_internal_tools in private environments.
 
 = Can I limit public tools by category? =
 Yes, via filter webo_wordpress_mcp_public_categories.
-
-= Can this run WordPress abilities without WEBO MCP? =
-Yes. If Abilities API is available, this plugin auto-bridges registered abilities to MCP tools. You can disable this with filter webo_wordpress_mcp_auto_bridge_abilities set to false.
 
 = Can I keep only WordPress.org-safe features? =
 Yes. Default bridge rules exclude patterns for bulk, plugins/themes, and multisite abilities.

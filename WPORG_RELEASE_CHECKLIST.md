@@ -24,7 +24,7 @@
 ## 5) Compatibility checks
 - [ ] Fresh install + activate on WP 6.0+
 - [ ] MCP flow tested: `initialize` -> `tools/list` -> `tools/call`
-- [ ] Tested with companion plugin `webo-mcp` enabled
+- [ ] Tested standalone on clean WordPress install
 - [ ] Basic n8n remote flow validated using `/wp-json/mcp/v1/router`
 
 ## 6) Packaging and release

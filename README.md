@@ -1,6 +1,6 @@
 # WEBO WordPress MCP
 
-Core Tool Registry for WEBO MCP ecosystem.
+Standalone MCP gateway and WordPress tools platform.
 
 ## Dependencies
 
@@ -142,7 +142,7 @@ add_filter( 'webo_wordpress_mcp_public_categories', function () {
 - Argument schema validation
 - Optional capability-based access control (`permission`)
 
-## Standalone mode (no WEBO MCP required)
+## Standalone primary mode
 
 Built-in standalone tools cover core WordPress operations:
 
