@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Core JSON-RPC MCP gateway for WordPress with tool registry, tools/list discovery, tools/call execution, and session/security controls.
+Public MCP JSON-RPC gateway for WordPress with tool registry, tools/list discovery, tools/call execution, and session security.
 
 == Description ==
 
@@ -21,6 +21,12 @@ WEBO WordPress MCP provides a public MCP gateway for WordPress via JSON-RPC:
 - Session lifecycle for MCP clients
 
 This plugin is designed as the public gateway layer. Advanced/internal abilities can be bridged by companion plugins (for example WEBO MCP) using the provided registry hooks.
+
+== Screenshots ==
+
+1. MCP endpoint working in a REST client (initialize)
+2. tools/list response with public tools
+3. tools/call response for a WordPress tool
 
 == Installation ==
 
@@ -39,6 +45,9 @@ Yes, via filter webo_wordpress_mcp_allow_internal_tools in private environments.
 = Can I limit public tools by category? =
 Yes, via filter webo_wordpress_mcp_public_categories.
 
+= Is this plugin suitable for production? =
+Yes, when used with proper authentication, TLS, and a limited tool exposure policy.
+
 == Changelog ==
 
 = 1.0.0 =
@@ -46,3 +55,8 @@ Yes, via filter webo_wordpress_mcp_public_categories.
 * MCP JSON-RPC router with initialize, tools/list, tools/call.
 * Tool registry integration and public visibility policy controls.
 * Session management and optional API key/HMAC security.
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial public release of WEBO WordPress MCP.
