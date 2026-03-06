@@ -1,5 +1,6 @@
 === WEBO WordPress MCP ===
-Contributors: webo
+Contributors: dinhwp
+Author URI: https://dinhwp.com
 Tags: mcp, ai, json-rpc, api, wordpress
 Requires at least: 6.0
 Tested up to: 6.7

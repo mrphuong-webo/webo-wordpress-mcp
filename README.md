@@ -2,6 +2,8 @@
 
 Standalone MCP gateway and WordPress tools platform.
 
+**Author:** Đinh WP ([dinhwp.com](https://dinhwp.com))
+
 ## Dependencies
 
 - This plugin bundles `wordpress/abilities-api` via Composer for standalone abilities bridge.
