@@ -5,7 +5,6 @@ WPORG_RELEASE_CHECKLIST.md
 examples/
 composer.json
 composer.lock
-n8n_ai_system_prompt.txt
 n8n_ai_system_promtp.txt
 vendor/wordpress/abilities-api/.github/
 vendor/wordpress/abilities-api/docs/
