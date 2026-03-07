@@ -1,0 +1,9 @@
+(Đây là logo gốc, PNG nền trong suốt, 512x512)
+Bạn cần upload file logo PNG vào thư mục này để sử dụng cho plugin.
+Tên file: webo-wordpress-mcp-logo.png
+
+Hướng dẫn tích hợp logo vào README.md:
+
+![Logo](images/webo-wordpress-mcp-logo.png)
+
+Nếu cần SVG hoặc JPG, hãy gửi file hoặc yêu cầu chuyển đổi.
