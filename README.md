@@ -4,6 +4,19 @@ Standalone MCP gateway and WordPress tools platform.
 
 **Author:** Đinh WP ([dinhwp.com](https://dinhwp.com))
 
+## Credits
+
+Special thanks to the authors and open source projects that contributed to this plugin:
+- [WordPress](https://wordpress.org)
+- [Abilities API](https://github.com/WordPress/abilities-api) ([Reference](https://make.wordpress.org/ai/2025/07/17/abilities-api/))
+- [MCP Adapter](https://github.com/WordPress/mcp-adapter) ([Reference](https://make.wordpress.org/ai/2025/07/17/mcp-adapter/))
+- [Composer](https://getcomposer.org)
+- Other PHP and JS libraries from the community
+
+If you use this plugin, please give credit to the authors of these libraries.
+
+---
+
 ## Dependencies
 
 - This plugin bundles `wordpress/abilities-api` via Composer for standalone abilities bridge.
