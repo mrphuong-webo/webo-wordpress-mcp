@@ -96,16 +96,34 @@ Yes, when used with proper authentication, TLS, and a limited tool exposure poli
 * Tool registry integration and public visibility policy controls.
 * Session management and optional API key/HMAC security.
 
+
 == Upgrade Notice ==
 
 = 1.1.1 =
-Recommended update to resolve tools/call validation compatibility for core no-input tools.
+Khuyến nghị cập nhật để sửa lỗi xác thực tools/call cho các core tool không cần input.
 
 = 1.0.2 =
-Recommended update to support active plugins verification via MCP tool.
+Khuyến nghị cập nhật để hỗ trợ xác minh plugin đang kích hoạt qua MCP tool.
 
 = 1.0.1 =
-Recommended update to refresh plugin metadata and improve tools/list compatibility.
+Khuyến nghị cập nhật để làm mới metadata plugin và cải thiện tools/list.
 
 = 1.0.0 =
-Initial public release of WEBO WordPress MCP.
+Phát hành công khai đầu tiên của WEBO WordPress MCP.
+
+== Credits ==
+
+Cảm ơn các tác giả và dự án mã nguồn mở đã đóng góp cho plugin này:
+
+- WordPress (https://wordpress.org)
+- Abilities API (https://github.com/webo-digital/abilities-api)
+- MCP Adapter (https://github.com/webo-digital/mcp-adapter)
+- Composer (https://getcomposer.org)
+- Các thư viện PHP và JS khác từ cộng đồng
+
+Nếu bạn sử dụng plugin này, hãy dành lời cảm ơn tới các tác giả thư viện trên.
+
+== License ==
+
+This plugin is licensed under the GPLv2 or later.
+See https://www.gnu.org/licenses/gpl-2.0.html for details.
